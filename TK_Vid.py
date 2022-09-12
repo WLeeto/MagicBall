@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox as mb
 from PIL import Image as PilImage
 from PIL import ImageTk
 from tkinter import messagebox
@@ -27,24 +28,45 @@ class MagicBall_widget(MagicBall):
         self.empty_lable = Label(self.root, width=50, height=2)
 
     def draw_widgets(self):
+        self.draw_menu()
+
         Label(self.root, image=self.photo_image).pack(pady=15)
         self.lable.pack()
         Button(self.root, text='Дай ответ', width=50, height=2, command=self.gimme_answer).pack()
         self.empty_lable.pack()
-        Button(self.root, text='Exit', width=50, height=2, command=self.exit).pack()
+        Button(self.root, text='Exit', width=50, height=2, command=self._exit).pack()
 
-    def exit(self):
+    def draw_menu(self):
+        menu_bar = Menu(self.root)
+        menu_bar.add_command(label="Фаил")
+
+        menu_bar.add_command(label="Выход", command=self._exit)
+
+        menu_bar.add_command(label='Инфо', command=self.show_info)
+
+        self.root.configure(menu=menu_bar)
+
+    def show_info(self):
+        info_name = "Разработчик ООО 'Руки крюки'"
+        info = "Данное приложение разработана исключительно для упрощения принятия решений\n" \
+               "Скрипт связывается с непостижимыми космическими силами, поэтому будьте осторожны\n\n" \
+               "Приложение не предназначено для использование в военных целях"
+        mb.showinfo(info_name, info)
+
+    def _exit(self):
         choice = messagebox.askyesno("Выход", "Действительно хотите выйти ?")
         if choice:
             self.root.destroy()
+
+    def gimme_answer(self):
+        answer = self.answer.answer()
+        self.lable.configure(text=f'{answer}')
 
     def run(self):
         self.draw_widgets()
         self.root.mainloop()
 
-    def gimme_answer(self):
-        answer = self.answer.answer()
-        self.lable.configure(text=f'{answer}')
+
 
 
 if __name__ == "__main__":
