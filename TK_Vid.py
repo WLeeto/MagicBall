@@ -2,7 +2,6 @@ from tkinter import *
 from tkinter import messagebox as mb
 from PIL import Image as PilImage
 from PIL import ImageTk
-from tkinter import messagebox
 
 from Magic_ball import MagicBall
 
@@ -23,9 +22,7 @@ class MagicBall_widget(MagicBall):
             self.root.iconbitmap(icon)
 
         self.answer = MagicBall()
-        self.lable = Label(self.root, text='Задай свой вопрос',font=('Consolas', 20, 'bold'), width=50, height=2)
-
-        self.empty_lable = Label(self.root, width=50, height=2)
+        self.lable = Label(self.root, text='Задай свой вопрос', font=('Consolas', 20, 'bold'), width=50, height=2)
 
     def draw_widgets(self):
         self.draw_menu()
@@ -33,16 +30,27 @@ class MagicBall_widget(MagicBall):
         Label(self.root, image=self.photo_image).pack(pady=15)
         self.lable.pack()
         Button(self.root, text='Дай ответ', width=50, height=2, command=self.gimme_answer).pack()
-        self.empty_lable.pack()
-        Button(self.root, text='Exit', width=50, height=2, command=self._exit).pack()
+        Button(self.root, text='Exit', width=50, height=2, command=self._exit).pack(pady=15)
 
     def draw_menu(self):
         menu_bar = Menu(self.root)
-        menu_bar.add_command(label="Фаил")
 
-        menu_bar.add_command(label="Выход", command=self._exit)
+        file_menu = Menu(menu_bar, tearoff=0)
+        file_menu.add_separator()
+        file_menu.add_command(label='Выйти', command=self._exit)
 
-        menu_bar.add_command(label='Инфо', command=self.show_info)
+        settings_menu = Menu(menu_bar, tearoff=0)
+        connection_menu = Menu(settings_menu, tearoff=0)
+        connection_menu.add_command(label='Установить новое соединение')
+        connection_menu.add_command(label='Отключить соединение')
+        settings_menu.add_cascade(label='Подключения', menu=connection_menu)
+
+        about_menu = Menu(menu_bar, tearoff=0)
+        about_menu.add_command(label='О приложении', command=self.show_info)
+
+        menu_bar.add_cascade(label='Фаил', menu=file_menu)
+        menu_bar.add_cascade(label='Настройки', menu=settings_menu)
+        menu_bar.add_cascade(label='Инфо', menu=about_menu)
 
         self.root.configure(menu=menu_bar)
 
@@ -54,7 +62,7 @@ class MagicBall_widget(MagicBall):
         mb.showinfo(info_name, info)
 
     def _exit(self):
-        choice = messagebox.askyesno("Выход", "Действительно хотите выйти ?")
+        choice = mb.askyesno("Выход", "Действительно хотите выйти ?")
         if choice:
             self.root.destroy()
 
@@ -67,9 +75,6 @@ class MagicBall_widget(MagicBall):
         self.root.mainloop()
 
 
-
-
 if __name__ == "__main__":
     test = MagicBall_widget(450, 440)
     test.run()
-
