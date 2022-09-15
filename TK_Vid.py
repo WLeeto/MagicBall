@@ -11,7 +11,7 @@ class MagicBall_widget(MagicBall):
         super().__init__()
         self.root = Tk()
         self.root.title(title)
-        self.root.geometry(f'{width}x{height}+1200+200')
+        self.root.geometry(f'{width}x{height}+1100+200')
         # self.root.resizable(resizable[0], resizable[1])
 
         img = PilImage.open(r"resourses\main_theme.png")
